@@ -1,0 +1,99 @@
+from turtle import window_height
+import torch
+import numpy as np
+from PIL import Image
+from torchvision.transforms.functional import to_pil_image, pil_to_tensor, normalize, resize
+
+
+class ReciproCamLoc:
+    def __init__(self, feature_net, head_net, mean, std, device):
+        self.feature_net = feature_net
+        self.head_net = head_net
+        self.feature_net.eval()
+        self.head_net.eval()
+        self.mean = mean
+        self.std = std
+        self.device = device
+        self.feature = None
+        self.softmax = torch.nn.Softmax(dim=1)
+        filter = [[1/16.0, 1/8.0, 1/16.0],
+                    [1/8.0, 1/2.0, 1/8.0],
+                    [1/16.0, 1/8.0, 1/16.0]]
+        self.gaussian = torch.tensor(filter).to(device)
+
+
+    def mosaic_feature(self, feature_map, nc, h, w):
+
+        new_features = torch.zeros(h*w, nc, h, w).to(self.device)
+        for b in range(h*w):
+            for i in range(h):
+                for j in range(w):
+                    if b == i*w + j:
+                        new_features[b,:,i,j] = feature_map[0,:,i,j]
+
+        return new_features
+
+
+    def get_class_activaton_map(self, mosaic_predic, index, h, w, norm=False):
+
+        cam = (mosaic_predic[:,index]).reshape((h, w))
+        if norm == True:
+            cam_min = cam.min()
+            cam = (cam - cam_min) / (cam.max() - cam_min)
+    
+        return cam
+
+
+    def get_feature_map(self):
+        act_map = None
+        if self.feature is not None:
+            act_map = self.feature.mean(dim=0)
+            act_map = (act_map - act_map.min()) / (act_map.max() - act_map.min())    
+
+        return act_map
+
+    def __call__(self, img, height, width, index=None):
+        H = height
+        W = width
+        s1 = 2
+        s2 = 3
+        input = normalize(resize(img, (H, W)) / 255., self.mean, self.std).to(self.device)
+        input2 = normalize(resize(img, (s1*H, s1*W)) / 255., self.mean, self.std).to(self.device)
+        input4 = normalize(resize(img, (s2*H, s2*W)) / 255., self.mean, self.std).to(self.device)
+
+        with torch.no_grad():
+            feature = self.feature_net(input.unsqueeze(0))
+            prediction = self.head_net(feature)
+            self.feature = feature.squeeze(0)
+            bs, nc, h, w = feature.shape
+
+            if index == None:
+                index = np.argmax(prediction.cpu().data.numpy()) 
+
+            new_features = self.mosaic_feature(feature, nc, h, w)
+            new_prediction = self.head_net(new_features)
+            new_prediction = self.softmax(new_prediction)
+
+            feature2 = self.feature_net(input2.unsqueeze(0))
+            new_features2 = self.mosaic_feature(feature2, nc, s1*h, s1*w)
+            new_prediction2 = self.head_net(new_features2)
+            new_prediction2 = self.softmax(new_prediction2)
+
+            feature4 = self.feature_net(input4.unsqueeze(0))
+            new_features4 = self.mosaic_feature(feature4, nc, s2*h, s2*w)
+            new_prediction4 = self.head_net(new_features4)
+            new_prediction4 = self.softmax(new_prediction4)
+
+            cam1 = self.get_class_activaton_map(new_prediction, index, h, w, True)
+            cam2 = self.get_class_activaton_map(new_prediction2, index, s1*h, s1*w, True)
+            cam4 = self.get_class_activaton_map(new_prediction4, index, s2*h, s2*w, True)
+
+            cam1 = pil_to_tensor(to_pil_image(cam1.detach(), mode='F').resize((h*s2, w*s2), Image.BICUBIC)).squeeze(0).to(self.device)
+            cam2 = pil_to_tensor(to_pil_image(cam2.detach(), mode='F').resize((h*s2, w*s2), Image.BICUBIC)).squeeze(0).to(self.device)
+
+            cam = cam4 + cam2 + cam1
+            cam_min = cam.min()
+            cam = (cam - cam_min) / (cam.max() - cam_min)
+
+        return cam, index
+
