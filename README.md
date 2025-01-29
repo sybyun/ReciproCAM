@@ -28,7 +28,7 @@ pip install -r requirements.txt
 ```
 
 ## Citation
-
+```bibtex
 @inproceedings{byun2024reciprocam,
   title={ReciproCAM: Lightweight Gradient-free Class Activation Map for Post-hoc Explanations},
   author={Byun, Seok-Yong and Lee, Wonju},
