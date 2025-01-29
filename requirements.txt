@@ -1,5 +1,7 @@
-torch>=1.5
-torchvision>=0.6
+torch>=1.13.1
+torchvision>=0.14.1
 numpy>=1.18
-Pillow>=7.0
-matplotlib>=3.2
+Pillow>=9.3.0
+matplotlib>=3.6.2
+scikit-learn==1.6.1
+torchmetrics==1.4.0

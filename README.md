@@ -2,7 +2,7 @@
 
 ReciproCAM is a lightweight, gradient-free method for generating Class Activation Maps (CAMs) to provide visual explanations for neural network predictions. This repository contains the implementation of ReciproCAM, as introduced in the paper:
 
-> **ReciproCAM: Lightweight Gradient-free Class Activation Map for Post-hoc Explanations**  
+> **ReciproCAM: [Lightweight Gradient-free Class Activation Map for Post-hoc Explanations](https://openaccess.thecvf.com/content/CVPR2024W/XAI4CV/papers/Byun_ReciproCAM_Lightweight_Gradient-free_Class_Activation_Map_for_Post-hoc_Explanations_CVPRW_2024_paper.pdf)**  
 > *Authors: Seok-Yong Byun, Wonju Lee*  
 > Published in: CVPR 2024 Workshops
 
