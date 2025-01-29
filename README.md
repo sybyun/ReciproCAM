@@ -25,9 +25,10 @@ To use ReciproCAM, clone this repository and install the required dependencies:
 git clone https://github.com/sybyun/ReciproCAM.git
 cd ReciproCAM
 pip install -r requirements.txt
-
+```
 
 ## Citation
+
 @inproceedings{byun2024reciprocam,
   title={ReciproCAM: Lightweight Gradient-free Class Activation Map for Post-hoc Explanations},
   author={Byun, Seok-Yong and Lee, Wonju},
