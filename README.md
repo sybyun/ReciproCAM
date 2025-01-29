@@ -25,7 +25,7 @@ ReciproCAM uses spatial perturbations on feature maps to exploit the correlation
 
 ## Quntative comparison 
 
-![Quntative](images/quntative_comparison.png)
+![Quntative](images/quantative_comparison.png)
 
 ## Installation
 
