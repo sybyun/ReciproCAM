@@ -17,6 +17,8 @@ Traditional visual explanation methods, such as CAM and Grad-CAM, often have lim
 
 ReciproCAM uses spatial perturbations on feature maps to exploit the correlation between activations and model outputs, enabling fast and interpretable saliency maps.
 
+![Overview of ReciproCAM](images/reciprocam_workflow.png)
+
 ## Installation
 
 To use ReciproCAM, clone this repository and install the required dependencies:
