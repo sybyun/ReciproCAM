@@ -19,6 +19,14 @@ ReciproCAM uses spatial perturbations on feature maps to exploit the correlation
 
 ![Overview of ReciproCAM](images/reciprocam_workflow.png)
 
+## Qualitative comparison 
+
+![Qualitative](images/qualitative_comparison.png)
+
+## Quntative comparison 
+
+![Quntative](images/quntative_comparison.png)
+
 ## Installation
 
 To use ReciproCAM, clone this repository and install the required dependencies:
