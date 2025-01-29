@@ -1,7 +1,4 @@
 # ReciproCAM
-ReciproCAM is an explainable AI solution for CNN based Computer Vision models. 
-
-# ReciproCAM
 
 ReciproCAM is a lightweight, gradient-free method for generating Class Activation Maps (CAMs) to provide visual explanations for neural network predictions. This repository contains the implementation of ReciproCAM, as introduced in the paper:
 
@@ -25,11 +22,12 @@ ReciproCAM uses spatial perturbations on feature maps to exploit the correlation
 To use ReciproCAM, clone this repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/yourusername/reciprocam.git
-cd reciprocam
+git clone https://github.com/sybyun/ReciproCAM.git
+cd ReciproCAM
 pip install -r requirements.txt
 
 
+## Citation
 @inproceedings{byun2024reciprocam,
   title={ReciproCAM: Lightweight Gradient-free Class Activation Map for Post-hoc Explanations},
   author={Byun, Seok-Yong and Lee, Wonju},
