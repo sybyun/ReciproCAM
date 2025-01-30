@@ -39,8 +39,8 @@ pip install -r requirements.txt
 
 ## Jupyter Notebooks
 
-### 1. [ReciproCAM Notebook](./recipro_cam_test.ipynb) explains how to use ReciproCAM.
-### 2. [Metric Notebook](./accuracy_check.ipynb) shows how to check accuracy of ReciproCAM algorithm with popular metrics.
+- **[ReciproCAM Notebook](./recipro_cam_test.ipynb)** explains how to use ReciproCAM.
+- **[Metric Notebook](./accuracy_check.ipynb)** shows how to check accuracy of ReciproCAM algorithm with popular metrics.
 
 ## Citation
 ```bibtex
