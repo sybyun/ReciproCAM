@@ -37,9 +37,10 @@ cd ReciproCAM
 pip install -r requirements.txt
 ```
 
-## Jupyter Notebook Example
+## Jupyter Notebooks
 
-Check out the [ReciproCAM Notebook](./recipro_cam_test.ipynb) for step-by-step examples.
+## 1. [ReciproCAM Notebook](./recipro_cam_test.ipynb) explains how to use ReciproCAM.
+## 2. [Metric Notebook](./accuracy_check.ipynb) shows how to check accuracy of ReciproCAM algorithm with popular metrics.
 
 ## Citation
 ```bibtex
