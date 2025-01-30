@@ -1,20 +1,20 @@
-import copy
 import torch
+import numpy as np
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 import torchvision.models as models
 
-from torchvision.transforms.functional import to_pil_image, pil_to_tensor, normalize
+from torchvision.transforms.functional import to_pil_image, pil_to_tensor
 from PIL import Image
 from sklearn.metrics import auc
 from torchmetrics import PearsonCorrCoef
 
 from src.recipro_cam import ReciproCam
 
-MOD = 50
+MOD = 10
 
 def average_drop_increase(model, data_loader, Height, Width, batch_size, device='cpu'):
-
+    # Metric for average drop and increase
     avg_drop = 0.0
     avg_inc = 0.0
 
@@ -24,7 +24,7 @@ def average_drop_increase(model, data_loader, Height, Width, batch_size, device=
 
     N = 0
 
-    eval_model = copy.deepcopy(model)
+    eval_model = model
     eval_model.eval()
     softmax = torch.nn.Softmax(dim=1)
     recipro_cam = ReciproCam(model, device=device)
@@ -34,6 +34,7 @@ def average_drop_increase(model, data_loader, Height, Width, batch_size, device=
             images, labels = images.to(device), labels.to(device)
             predictions = model(images)
             predictions = softmax(predictions)
+
             for i in range(batch_size):
                 class_id = labels[i].item()
                 yc[i] = predictions[i][class_id]
@@ -65,12 +66,12 @@ def average_drop_increase(model, data_loader, Height, Width, batch_size, device=
 
 
 def dauc_iauc(model, data_loader, Height, Width, batch_size, device='cpu'):
-
+    # Metric for Deletion/Insertion Area Under Curve (DAUC/IAUC)
     DAUC_score = 0.0
     IAUC_score = 0.0
 
     N = 0
-    eval_model = copy.deepcopy(model)
+    eval_model = model
     eval_model.eval()
     softmax = torch.nn.Softmax(dim=1)
     recipro_cam = ReciproCam(model, device=device)
@@ -131,7 +132,7 @@ def dauc_iauc(model, data_loader, Height, Width, batch_size, device='cpu'):
 
 
 def ADCC(model, data_loader, Height, Width, batch_size, device='cpu'):
-
+    # Metric for Average Drop, Increase, Coherency, Complexity (ADCC)
     adcc = 0.0
     coherency = 0.0
     complexity = 0.0
@@ -145,7 +146,7 @@ def ADCC(model, data_loader, Height, Width, batch_size, device='cpu'):
     oc = torch.zeros(batch_size)
 
     N = 0
-    eval_model = copy.deepcopy(model)
+    eval_model = model
     eval_model.eval()
     softmax = torch.nn.Softmax(dim=1)
     recipro_cam = ReciproCam(model, device=device)

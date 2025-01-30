@@ -1,7 +1,5 @@
-from typing import OrderedDict
+import copy
 import torch
-import numpy as np
-
 
 class ReciproCam:
     '''
@@ -19,7 +17,7 @@ class ReciproCam:
             target_layer_name: layer name for understanding the layer's activation
         '''
 
-        self.model = model
+        self.model = copy.deepcopy(model)
         self.model.eval()
         self.target_layer_name = target_layer_name
         self.device = device
@@ -136,8 +134,8 @@ class ReciproCam:
     def __call__(self, input, index=None):
         with torch.no_grad():
             BS, _, _, _ = input.shape
-            cam = []
             if BS > 1:
+                cam = []
                 for b in range(BS):
                     prediction = self.model(input[b, : , :, :].unsqueeze(0))
                     prediction = self.softmax(prediction)
@@ -151,7 +149,7 @@ class ReciproCam:
                 if index == None:
                     index = prediction[0].argmax().item()
                 _, _, h, w = self.feature.shape
-                cam.append(self._get_class_activaton_map(prediction[1:, :], index, h, w))
+                cam = self._get_class_activaton_map(prediction[1:, :], index, h, w)
 
         return cam, index
 

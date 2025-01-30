@@ -37,6 +37,10 @@ cd ReciproCAM
 pip install -r requirements.txt
 ```
 
+## Jupyter Notebook Example
+
+Check out the [ReciproCAM Notebook](./recipro_cam_test.ipynb) for step-by-step examples.
+
 ## Citation
 ```bibtex
 @inproceedings{byun2024reciprocam,
