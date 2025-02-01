@@ -52,10 +52,8 @@ class ReciproCam:
                 self.target_layers.clear()
                 self.target_layers.append(m)
                 self.conv_depth = depth
-            #elif self.conv_depth == depth and len(self.target_layers) > 0 and isinstance(m, torch.nn.BatchNorm2d):
             elif self.conv_depth == depth and any(self.target_layers) and isinstance(m, torch.nn.BatchNorm2d):
                 self.target_layers.append(m)
-            #elif self.conv_depth == depth and len(self.target_layers) > 0 and isinstance(m, torch.nn.ReLU):
             elif self.conv_depth == depth and any(self.target_layers) and isinstance(m, torch.nn.ReLU):
                 self.target_layers.append(m)
         else:
